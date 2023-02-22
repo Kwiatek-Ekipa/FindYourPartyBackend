@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "zCmLBiRLKKft9omdlgklp5d1T6YCflbgZ9Nw2Cdlw8du75VW58S0upBj6HlPAysgxQ+W8yJ3zrjEgOyqp+doyg==",
+  "dgSpecHash": "Fwocm2y8qcmkmRFBPsbg3mqAnTZq7kqtHKv3Sh3+z2N4AE2j8G5rPqJYwAfa+fLohNYRyhYFqTczaFmOqkIamw==",
   "success": true,
   "projectFilePath": "C:\\Users\\KuSZo\\Documents\\Apps\\dotNET\\1. Git\\Kwiatek-Ekipa\\FindYourPartyBackend\\FindYourPartyBackend\\FindYourPartyBackend\\FindYourPartyBackend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\KuSZo\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\KuSZo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\KuSZo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\KuSZo\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\KuSZo\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.3\\microsoft.entityframeworkcore.7.0.3.nupkg.sha512",
     "C:\\Users\\KuSZo\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.3\\microsoft.entityframeworkcore.abstractions.7.0.3.nupkg.sha512",
     "C:\\Users\\KuSZo\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.3\\microsoft.entityframeworkcore.analyzers.7.0.3.nupkg.sha512",

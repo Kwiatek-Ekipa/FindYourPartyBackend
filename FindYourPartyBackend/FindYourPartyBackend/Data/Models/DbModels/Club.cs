@@ -10,16 +10,18 @@ namespace FindYourPartyBackend.Data.Models.DbModels
     public class Club
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        [Required]
+        public string Name { get; set; }
         public string? Description { get; set; }
-        [Column(TypeName = "jsonb")]
-        public List<string>? ClubType { get; set; }
+        [Required]
+        public string? ClubType { get; set; }
+        [Required]
         public ClubSizeEnum? ClubSize { get; set; }
+        [Required]
         public NumberOfRoomsEnum? NumberOfRooms { get; set; }
-        [Column(TypeName = "jsonb")]
-        public List<string>? MusicType { get; set; }
-        [Column(TypeName = "jsonb")]
-        public List<string>? Links { get; set; }
+        public string? MusicType { get; set; }
+        [Required]
+        public string? Links { get; set; }
 
         public virtual ClubAddress Address { get; set; }
         public virtual ClubOpeningHours OpeningHours { get; set; }
