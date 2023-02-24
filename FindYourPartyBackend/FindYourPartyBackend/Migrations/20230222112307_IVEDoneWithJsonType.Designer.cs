@@ -3,6 +3,7 @@ using System;
 using FindYourPartyBackend.Data.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourPartyBackend.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230222112307_IVEDoneWithJsonType")]
+    partial class IVEDoneWithJsonType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,33 +33,26 @@ namespace FindYourPartyBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClubSize")
+                    b.Property<int?>("ClubSize")
                         .HasColumnType("integer");
 
                     b.Property<string>("ClubType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<string>("Links")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MusicType")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("NumberOfRooms")
+                    b.Property<int?>("NumberOfRooms")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("PublicId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
