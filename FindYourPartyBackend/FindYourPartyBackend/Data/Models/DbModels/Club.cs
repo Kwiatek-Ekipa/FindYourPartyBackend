@@ -1,6 +1,7 @@
 ﻿using FindYourPartyBackend.Data.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.OpenApi.Writers;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
@@ -9,9 +10,9 @@ namespace FindYourPartyBackend.Data.Models.DbModels
 {
     public class Club
     {
-        public int Id { get; set; }
+        public int ClubId { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid PublicId { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
         public string? Description { get; set; }
