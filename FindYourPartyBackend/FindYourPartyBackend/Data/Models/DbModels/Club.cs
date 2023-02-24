@@ -10,9 +10,9 @@ namespace FindYourPartyBackend.Data.Models.DbModels
 {
     public class Club
     {
-        public int ClubId { get; set; }
+        public int Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid PublicId { get; set; }
         [Required]
         public string Name { get; set; }
         public string? Description { get; set; }

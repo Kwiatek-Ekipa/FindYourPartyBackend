@@ -24,7 +24,7 @@ namespace FindYourPartyBackend.Data.Models.DbModels
                 .HasForeignKey<ClubOpeningHours>(c => c.Id);
 
             modelBuilder.Entity<Club>()
-                .HasIndex(a => a.Id)
+                .HasIndex(a => a.PublicId)
                 .IsUnique();
         }
     }

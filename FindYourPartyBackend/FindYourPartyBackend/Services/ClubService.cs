@@ -34,16 +34,22 @@ namespace FindYourPartyBackend.Services
                 .Where(club => getClubsAndBasicInfoFilterDto.NumberOfRooms == null || club.NumberOfRooms.Equals(getClubsAndBasicInfoFilterDto.NumberOfRooms))
                 .Where(club => getClubsAndBasicInfoFilterDto.MusicType == null || club.MusicType.ToLower().Contains(getClubsAndBasicInfoFilterDto.MusicType.ToLower()));
 
-            var paginationClubsAndBasicInfo = allClubsAndBasicInfo
-                .Skip(paginationDto.PageSize * (paginationDto.PageNumber - 1))
-                .Take(paginationDto.PageSize)
-                .ToList();
-
-
+            List<Club> paginationClubsAndBasicInfo;
+            if (paginationDto.PageSize == -1)
+            {
+                paginationClubsAndBasicInfo = allClubsAndBasicInfo.ToList();
+            }
+            else
+            {
+                paginationClubsAndBasicInfo = allClubsAndBasicInfo
+                                                .Skip(paginationDto.PageSize * (paginationDto.PageIndex - 1))
+                                                .Take(paginationDto.PageSize)
+                                                .ToList();
+            }
 
             var clubsDto = _mapper.Map<List<ClubDto>>(paginationClubsAndBasicInfo);
 
-            var result = new PagedResultDto<ClubDto>(clubsDto, allClubsAndBasicInfo.Count(), paginationDto.PageSize, paginationDto.PageNumber);
+            var result = new PagedResultDto<ClubDto>(clubsDto, allClubsAndBasicInfo.Count(), paginationDto.PageSize, paginationDto.PageIndex);
 
             return result;
         }
