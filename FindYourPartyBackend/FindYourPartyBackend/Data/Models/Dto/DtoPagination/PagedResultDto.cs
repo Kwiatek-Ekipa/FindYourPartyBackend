@@ -8,13 +8,24 @@
         public int ItemsTo { get; set; }
         public int TotalItemsCount { get; set; }
 
-        public PagedResultDto(List<T> items, int totalItemsCount, int pageSize, int pageNumber)
+        public PagedResultDto(List<T> items, int totalItemsCount, int pageSize, int pageIndex)
         {
-            Items = items;
-            TotalItemsCount = totalItemsCount;
-            ItemsFrom = pageSize * (pageNumber - 1) + 1;
-            ItemsTo = ItemsFrom + pageSize - 1;
-            TotalPages = (int)Math.Ceiling(totalItemsCount /(double)pageSize);
+            if (pageSize == -1)
+            {
+                Items = items;
+                TotalItemsCount = totalItemsCount;
+                ItemsFrom = 1;
+                ItemsTo = totalItemsCount;
+                TotalPages = 1;
+            }
+            else
+            {
+                Items = items;
+                TotalItemsCount = totalItemsCount;
+                ItemsFrom = pageSize * (pageIndex - 1) + 1;
+                ItemsTo = ItemsFrom + pageSize - 1;
+                TotalPages = (int)Math.Ceiling(totalItemsCount / (double)pageSize);
+            }
         }
     }
 }

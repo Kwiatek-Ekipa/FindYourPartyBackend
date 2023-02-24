@@ -3,6 +3,7 @@ using System;
 using FindYourPartyBackend.Data.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourPartyBackend.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230224210044_guidFixed1")]
+    partial class guidFixed1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace FindYourPartyBackend.Migrations
                     b.HasIndex("PublicId")
                         .IsUnique();
 
-                    b.ToTable("Clubs", (string)null);
+                    b.ToTable("Clubs");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubAddress", b =>
@@ -85,7 +88,7 @@ namespace FindYourPartyBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClubAddress", (string)null);
+                    b.ToTable("ClubAddress");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubOpeningHours", b =>
@@ -123,7 +126,7 @@ namespace FindYourPartyBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClubOpeningHours", (string)null);
+                    b.ToTable("ClubOpeningHours");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.Event", b =>
@@ -160,7 +163,7 @@ namespace FindYourPartyBackend.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubAddress", b =>

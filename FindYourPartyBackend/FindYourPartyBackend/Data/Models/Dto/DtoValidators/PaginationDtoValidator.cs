@@ -5,12 +5,10 @@ namespace FindYourPartyBackend.Data.Models.Dto.DtoValidators
 {
     public class PaginationDtoValidator : AbstractValidator<PaginationDto>
     {
-        private int[] allowedPageSize = new[] {10, 20, 30};
+        private int[] allowedPageSize = new[] {-1, 10, 20, 30};
         public PaginationDtoValidator()
         {
-
-
-            RuleFor(r => r.PageNumber).GreaterThanOrEqualTo(1);
+            RuleFor(r => r.PageIndex).GreaterThanOrEqualTo(1);
             RuleFor(r => r.PageSize).Custom((value, context) =>
             {
                 if(!allowedPageSize.Contains(value))
