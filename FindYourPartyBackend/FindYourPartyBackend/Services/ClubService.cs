@@ -2,13 +2,14 @@
 using FindYourPartyBackend.Data.Models.DbModels;
 using FindYourPartyBackend.Data.Models.Dto.DtoFiltersModels;
 using FindYourPartyBackend.Data.Models.Dto.DtoModels;
+using FindYourPartyBackend.Data.Models.Dto.DtoPagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindYourPartyBackend.Services
 {
     public interface IClubService
     {
-        IEnumerable<ClubDto> GetClubsAndBasicInfo(GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto);
+        PagedResultDto<ClubDto> GetClubsAndBasicInfo(GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto, PaginationDto paginationDto);
     }
 
     public class ClubService : IClubService
@@ -22,19 +23,27 @@ namespace FindYourPartyBackend.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ClubDto> GetClubsAndBasicInfo(GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto)
+        public PagedResultDto<ClubDto> GetClubsAndBasicInfo(GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto, PaginationDto paginationDto)
         {
-            var ClubsAndBasicInfo = _dbContext.Clubs
+            var allClubsAndBasicInfo = _dbContext.Clubs
                 .Include(club => club.Address)
-                .Where(club => club.Name.ToLower().Contains(getClubsAndBasicInfoFilterDto.Name.ToLower() ?? club.Name.ToLower()))
-                .Where(club => club.Address.City.Equals(getClubsAndBasicInfoFilterDto.AddressCity ?? club.Address.City))
-                .Where(club => club.ClubSize.Equals(getClubsAndBasicInfoFilterDto.ClubSize ?? club.ClubSize))
-                .Where(club => club.ClubType.ToLower().Contains(getClubsAndBasicInfoFilterDto.ClubType.ToLower() ?? club.ClubType.ToLower()))
-                .Where(club => club.NumberOfRooms.Equals(getClubsAndBasicInfoFilterDto.NumberOfRooms ?? club.NumberOfRooms))
-                .Where(club => club.MusicType.ToLower().Contains(getClubsAndBasicInfoFilterDto.MusicType.ToLower() ?? club.MusicType.ToLower()))
+                .Where(club => getClubsAndBasicInfoFilterDto.Name == null || club.Name.ToLower().Contains(getClubsAndBasicInfoFilterDto.Name.ToLower()))
+                .Where(club => getClubsAndBasicInfoFilterDto.AddressCity == null || club.Address.City.Equals(getClubsAndBasicInfoFilterDto.AddressCity))
+                .Where(club => getClubsAndBasicInfoFilterDto.ClubSize == null || club.ClubSize.Equals(getClubsAndBasicInfoFilterDto.ClubSize))
+                .Where(club => getClubsAndBasicInfoFilterDto.ClubType == null || club.ClubType.ToLower().Contains(getClubsAndBasicInfoFilterDto.ClubType.ToLower()))
+                .Where(club => getClubsAndBasicInfoFilterDto.NumberOfRooms == null || club.NumberOfRooms.Equals(getClubsAndBasicInfoFilterDto.NumberOfRooms))
+                .Where(club => getClubsAndBasicInfoFilterDto.MusicType == null || club.MusicType.ToLower().Contains(getClubsAndBasicInfoFilterDto.MusicType.ToLower()));
+
+            var paginationClubsAndBasicInfo = allClubsAndBasicInfo
+                .Skip(paginationDto.PageSize * (paginationDto.PageNumber - 1))
+                .Take(paginationDto.PageSize)
                 .ToList();
 
-            var result = _mapper.Map<List<ClubDto>>(ClubsAndBasicInfo);
+
+
+            var clubsDto = _mapper.Map<List<ClubDto>>(paginationClubsAndBasicInfo);
+
+            var result = new PagedResultDto<ClubDto>(clubsDto, allClubsAndBasicInfo.Count(), paginationDto.PageSize, paginationDto.PageNumber);
 
             return result;
         }

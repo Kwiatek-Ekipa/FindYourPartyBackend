@@ -1,5 +1,6 @@
 ﻿using FindYourPartyBackend.Data.Models.Dto.DtoFiltersModels;
 using FindYourPartyBackend.Data.Models.Dto.DtoModels;
+using FindYourPartyBackend.Data.Models.Dto.DtoPagination;
 using FindYourPartyBackend.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ namespace FindYourPartyBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ClubDto>> GetClubsAndBasicInfo([FromQuery] GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto)
+        public ActionResult<PagedResultDto<ClubDto>> GetClubsAndBasicInfo([FromQuery] GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto, [FromQuery] PaginationDto paginationDto)
         {
-            var ClubsAndBasicInfo = _clubService.GetClubsAndBasicInfo(getClubsAndBasicInfoFilterDto);
+            var ClubsAndBasicInfo = _clubService.GetClubsAndBasicInfo(getClubsAndBasicInfoFilterDto, paginationDto);
             return Ok(ClubsAndBasicInfo);
         }
     }
