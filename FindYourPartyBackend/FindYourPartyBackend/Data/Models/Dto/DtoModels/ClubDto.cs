@@ -6,7 +6,7 @@ namespace FindYourPartyBackend.Data.Models.Dto.DtoModels
 {
     public class ClubDto
     {
-        public int Id { get; set; }
+        public Guid PublicId { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? ClubType { get; set; }

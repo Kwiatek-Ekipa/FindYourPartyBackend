@@ -26,12 +26,12 @@ namespace FindYourPartyBackend.Services
         {
             var ClubsAndBasicInfo = _dbContext.Clubs
                 .Include(club => club.Address)
-                .Where(club => club.Name.Equals(getClubsAndBasicInfoFilterDto.Name ?? club.Name))
+                .Where(club => club.Name.ToLower().Contains(getClubsAndBasicInfoFilterDto.Name.ToLower() ?? club.Name.ToLower()))
                 .Where(club => club.Address.City.Equals(getClubsAndBasicInfoFilterDto.AddressCity ?? club.Address.City))
                 .Where(club => club.ClubSize.Equals(getClubsAndBasicInfoFilterDto.ClubSize ?? club.ClubSize))
-                .Where(club => club.ClubType.Equals(getClubsAndBasicInfoFilterDto.ClubType ?? club.ClubType))
+                .Where(club => club.ClubType.ToLower().Contains(getClubsAndBasicInfoFilterDto.ClubType.ToLower() ?? club.ClubType.ToLower()))
                 .Where(club => club.NumberOfRooms.Equals(getClubsAndBasicInfoFilterDto.NumberOfRooms ?? club.NumberOfRooms))
-                .Where(club => club.MusicType.Equals(getClubsAndBasicInfoFilterDto.MusicType ?? club.MusicType))
+                .Where(club => club.MusicType.ToLower().Contains(getClubsAndBasicInfoFilterDto.MusicType.ToLower() ?? club.MusicType.ToLower()))
                 .ToList();
 
             var result = _mapper.Map<List<ClubDto>>(ClubsAndBasicInfo);
