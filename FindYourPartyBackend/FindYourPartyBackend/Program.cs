@@ -1,6 +1,7 @@
 using FindYourPartyBackend.Data.Models.DbModels;
 using FindYourPartyBackend.Data.Models.Dto.DtoPagination;
 using FindYourPartyBackend.Data.Models.Dto.DtoValidators;
+using FindYourPartyBackend.Data.Seeder;
 using FindYourPartyBackend.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -18,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<DbSeeder>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddControllers().AddFluentValidation();
@@ -25,6 +27,10 @@ builder.Services.AddScoped<IValidator<PaginationDto>, PaginationDtoValidator>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+seeder.Seed();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

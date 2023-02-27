@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -8,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourPartyBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class BaseDbContextCreated : Migration
+    public partial class idNamedChanged : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,38 +16,39 @@ namespace FindYourPartyBackend.Migrations
                 name: "Clubs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    ClubId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    ClubType = table.Column<List<string>>(type: "jsonb", nullable: true),
-                    ClubSize = table.Column<int>(type: "integer", nullable: true),
-                    NumberOfRooms = table.Column<int>(type: "integer", nullable: true),
-                    MusicType = table.Column<List<string>>(type: "jsonb", nullable: true),
-                    Links = table.Column<List<string>>(type: "jsonb", nullable: true)
+                    ClubType = table.Column<string>(type: "text", nullable: false),
+                    ClubSize = table.Column<int>(type: "integer", nullable: false),
+                    NumberOfRooms = table.Column<int>(type: "integer", nullable: false),
+                    MusicType = table.Column<string>(type: "text", nullable: true),
+                    Links = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clubs", x => x.Id);
+                    table.PrimaryKey("PK_Clubs", x => x.ClubId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ClubAddress",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    ClubId = table.Column<int>(type: "integer", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),
                     Street = table.Column<string>(type: "text", nullable: false),
                     Number = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClubAddress", x => x.Id);
+                    table.PrimaryKey("PK_ClubAddress", x => x.ClubId);
                     table.ForeignKey(
-                        name: "FK_ClubAddress_Clubs_Id",
-                        column: x => x.Id,
+                        name: "FK_ClubAddress_Clubs_ClubId",
+                        column: x => x.ClubId,
                         principalTable: "Clubs",
-                        principalColumn: "Id",
+                        principalColumn: "ClubId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -56,7 +56,7 @@ namespace FindYourPartyBackend.Migrations
                 name: "ClubOpeningHours",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    ClubId = table.Column<int>(type: "integer", nullable: false),
                     Monday = table.Column<string>(type: "text", nullable: false),
                     Tuesday = table.Column<string>(type: "text", nullable: false),
                     Wednesday = table.Column<string>(type: "text", nullable: false),
@@ -67,12 +67,12 @@ namespace FindYourPartyBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClubOpeningHours", x => x.Id);
+                    table.PrimaryKey("PK_ClubOpeningHours", x => x.ClubId);
                     table.ForeignKey(
-                        name: "FK_ClubOpeningHours_Clubs_Id",
-                        column: x => x.Id,
+                        name: "FK_ClubOpeningHours_Clubs_ClubId",
+                        column: x => x.ClubId,
                         principalTable: "Clubs",
-                        principalColumn: "Id",
+                        principalColumn: "ClubId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -96,9 +96,15 @@ namespace FindYourPartyBackend.Migrations
                         name: "FK_Events_Clubs_ClubId",
                         column: x => x.ClubId,
                         principalTable: "Clubs",
-                        principalColumn: "Id",
+                        principalColumn: "ClubId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clubs_Id",
+                table: "Clubs",
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_ClubId",
