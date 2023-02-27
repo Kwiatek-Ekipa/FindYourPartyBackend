@@ -1,5 +1,4 @@
 ﻿using FindYourPartyBackend.Data.Models.DbModels;
-using FindYourPartyBackend.Data.Models.Dto.DtoFiltersModels;
 
 namespace FindYourPartyBackend.Data.Seeder
 {
