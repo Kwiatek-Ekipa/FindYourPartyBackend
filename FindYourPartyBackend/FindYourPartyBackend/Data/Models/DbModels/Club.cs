@@ -10,9 +10,9 @@ namespace FindYourPartyBackend.Data.Models.DbModels
 {
     public class Club
     {
-        public int Id { get; set; }
+        public int ClubId { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid PublicId { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
         public string? Description { get; set; }
@@ -22,9 +22,10 @@ namespace FindYourPartyBackend.Data.Models.DbModels
         public ClubSizeEnum? ClubSize { get; set; }
         [Required]
         public NumberOfRoomsEnum? NumberOfRooms { get; set; }
-        public string? MusicType { get; set; }
         [Required]
+        public string? MusicType { get; set; }
         public string? Links { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public virtual ClubAddress Address { get; set; }
         public virtual ClubOpeningHours OpeningHours { get; set; }

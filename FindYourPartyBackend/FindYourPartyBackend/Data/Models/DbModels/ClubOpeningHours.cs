@@ -1,8 +1,10 @@
-﻿namespace FindYourPartyBackend.Data.Models.DbModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FindYourPartyBackend.Data.Models.DbModels
 {
     public class ClubOpeningHours
     {
-        public int Id { get; set; }
+        public int ClubId { get; set; }
         public string Monday { get; set; }
         public string Tuesday { get; set; }
         public string Wednesday { get; set; }

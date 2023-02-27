@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourPartyBackend.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20230222112307_IVEDoneWithJsonType")]
-    partial class IVEDoneWithJsonType
+    [Migration("20230227133218_clubEntityModified")]
+    partial class clubEntityModified
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,41 +27,54 @@ namespace FindYourPartyBackend.Migrations
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.Club", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClubId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ClubId"));
 
-                    b.Property<int?>("ClubSize")
+                    b.Property<int>("ClubSize")
                         .HasColumnType("integer");
 
                     b.Property<string>("ClubType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Links")
                         .HasColumnType("text");
 
                     b.Property<string>("MusicType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("NumberOfRooms")
+                    b.Property<int>("NumberOfRooms")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.HasKey("ClubId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Clubs");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubAddress", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClubId")
                         .HasColumnType("integer");
 
                     b.Property<string>("City")
@@ -72,18 +85,22 @@ namespace FindYourPartyBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PostCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("ClubId");
 
                     b.ToTable("ClubAddress");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubOpeningHours", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClubId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Friday")
@@ -114,7 +131,7 @@ namespace FindYourPartyBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("ClubId");
 
                     b.ToTable("ClubOpeningHours");
                 });
@@ -160,7 +177,7 @@ namespace FindYourPartyBackend.Migrations
                 {
                     b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", "Club")
                         .WithOne("Address")
-                        .HasForeignKey("FindYourPartyBackend.Data.Models.DbModels.ClubAddress", "Id")
+                        .HasForeignKey("FindYourPartyBackend.Data.Models.DbModels.ClubAddress", "ClubId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -171,7 +188,7 @@ namespace FindYourPartyBackend.Migrations
                 {
                     b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", "Club")
                         .WithOne("OpeningHours")
-                        .HasForeignKey("FindYourPartyBackend.Data.Models.DbModels.ClubOpeningHours", "Id")
+                        .HasForeignKey("FindYourPartyBackend.Data.Models.DbModels.ClubOpeningHours", "ClubId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

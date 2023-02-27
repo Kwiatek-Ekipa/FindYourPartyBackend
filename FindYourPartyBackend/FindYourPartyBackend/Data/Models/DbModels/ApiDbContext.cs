@@ -16,16 +16,25 @@ namespace FindYourPartyBackend.Data.Models.DbModels
             modelBuilder.Entity<Club>()
                 .HasOne(a => a.Address)
                 .WithOne(b => b.Club)
-                .HasForeignKey<ClubAddress>(c => c.Id);
+                .HasForeignKey<ClubAddress>(c => c.ClubId);
 
             modelBuilder.Entity<Club>()
                 .HasOne(a => a.OpeningHours)
                 .WithOne(b => b.Club)
-                .HasForeignKey<ClubOpeningHours>(c => c.Id);
+                .HasForeignKey<ClubOpeningHours>(c => c.ClubId);
 
             modelBuilder.Entity<Club>()
-                .HasIndex(a => a.PublicId)
+                .HasIndex(a => a.Id)
                 .IsUnique();
+
+            modelBuilder.Entity<Club>()
+                .HasKey(a => a.ClubId);
+
+            modelBuilder.Entity<ClubAddress>()
+                .HasKey(a => a.ClubId);
+
+            modelBuilder.Entity<ClubOpeningHours>()
+                .HasKey(a => a.ClubId);
         }
     }
 }
