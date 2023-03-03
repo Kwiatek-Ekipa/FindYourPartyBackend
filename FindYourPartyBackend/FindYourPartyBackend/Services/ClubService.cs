@@ -25,14 +25,20 @@ namespace FindYourPartyBackend.Services
 
         public PagedResultDto<ClubDto> GetClubsAndBasicInfo(GetClubsAndBasicInfoFilterDto getClubsAndBasicInfoFilterDto, PaginationDto paginationDto)
         {
+
+
             var allClubsAndBasicInfo = _dbContext.Clubs
                 .Include(club => club.Address)
+                .Include(club => club.ClubClubTypes)
+                .ThenInclude(club => club.ClubType)
+                .Include(club => club.ClubMusicTypes)
+                .ThenInclude(club => club.MusicType)
                 .Where(club => getClubsAndBasicInfoFilterDto.Name == null || club.Name.ToLower().Contains(getClubsAndBasicInfoFilterDto.Name.ToLower()))
                 .Where(club => getClubsAndBasicInfoFilterDto.AddressCity == null || club.Address.City.Equals(getClubsAndBasicInfoFilterDto.AddressCity))
                 .Where(club => getClubsAndBasicInfoFilterDto.ClubSize == null || club.ClubSize.Equals(getClubsAndBasicInfoFilterDto.ClubSize))
-                .Where(club => getClubsAndBasicInfoFilterDto.ClubType == null || club.ClubType.ToLower().Contains(getClubsAndBasicInfoFilterDto.ClubType.ToLower()))
+                .Where(club => getClubsAndBasicInfoFilterDto.ClubType == null || club.ClubClubTypes.Any(club => club.ClubType.TypeName.ToLower().Contains(getClubsAndBasicInfoFilterDto.ClubType.ToLower())))
                 .Where(club => getClubsAndBasicInfoFilterDto.NumberOfRooms == null || club.NumberOfRooms.Equals(getClubsAndBasicInfoFilterDto.NumberOfRooms))
-                .Where(club => getClubsAndBasicInfoFilterDto.MusicType == null || club.MusicType.ToLower().Contains(getClubsAndBasicInfoFilterDto.MusicType.ToLower()));
+                .Where(club => getClubsAndBasicInfoFilterDto.MusicType == null || club.ClubMusicTypes.Any(club => club.MusicType.TypeName.ToLower().Contains(getClubsAndBasicInfoFilterDto.MusicType.ToLower())));
 
             List<Club> paginationClubsAndBasicInfo;
             if (paginationDto.PageSize == -1)

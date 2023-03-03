@@ -12,12 +12,16 @@ namespace FindYourPartyBackend.Data.Seeder
 
         public void Seed()
         {
-            if(_dbContext.Database.CanConnect()) 
-            { 
-                if(!_dbContext.Clubs.Any()) 
+            if (_dbContext.Database.CanConnect())
+            {
+                if (!_dbContext.Clubs.Any() && !_dbContext.ClubTypes.Any() && !_dbContext.MusicTypes.Any())
                 {
                     var clubs = ClubsSeeder.GetClubs();
+                    var clubTypes = ClubTypesSeeder.GetClubTypes();
+                    var musicTypes = MusicTypesSeeder.GetMusicTypes();
                     _dbContext.Clubs.AddRange(clubs);
+                    _dbContext.ClubTypes.AddRange(clubTypes);
+                    _dbContext.MusicTypes.AddRange(musicTypes);
                     _dbContext.SaveChanges();
                 }
             }
