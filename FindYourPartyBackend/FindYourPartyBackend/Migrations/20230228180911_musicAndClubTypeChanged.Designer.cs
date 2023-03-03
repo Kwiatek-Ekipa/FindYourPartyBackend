@@ -3,6 +3,7 @@ using System;
 using FindYourPartyBackend.Data.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FindYourPartyBackend.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230228180911_musicAndClubTypeChanged")]
+    partial class musicAndClubTypeChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,36 @@ namespace FindYourPartyBackend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ClubClubType", b =>
+                {
+                    b.Property<int>("ClubTypesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ClubsClubId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ClubTypesId", "ClubsClubId");
+
+                    b.HasIndex("ClubsClubId");
+
+                    b.ToTable("ClubClubType");
+                });
+
+            modelBuilder.Entity("ClubMusicType", b =>
+                {
+                    b.Property<int>("ClubsClubId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MusicTypesId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ClubsClubId", "MusicTypesId");
+
+                    b.HasIndex("MusicTypesId");
+
+                    b.ToTable("ClubMusicType");
+                });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.Club", b =>
                 {
@@ -85,36 +118,6 @@ namespace FindYourPartyBackend.Migrations
                     b.HasKey("ClubId");
 
                     b.ToTable("ClubAddress");
-                });
-
-            modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubClubType", b =>
-                {
-                    b.Property<int>("ClubTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ClubId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClubTypeId", "ClubId");
-
-                    b.HasIndex("ClubId");
-
-                    b.ToTable("ClubClubTypes");
-                });
-
-            modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubMusicType", b =>
-                {
-                    b.Property<int>("MusicTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ClubId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MusicTypeId", "ClubId");
-
-                    b.HasIndex("ClubId");
-
-                    b.ToTable("ClubMusicTypes");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubOpeningHours", b =>
@@ -232,6 +235,36 @@ namespace FindYourPartyBackend.Migrations
                     b.ToTable("MusicTypes");
                 });
 
+            modelBuilder.Entity("ClubClubType", b =>
+                {
+                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.ClubType", null)
+                        .WithMany()
+                        .HasForeignKey("ClubTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", null)
+                        .WithMany()
+                        .HasForeignKey("ClubsClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubMusicType", b =>
+                {
+                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", null)
+                        .WithMany()
+                        .HasForeignKey("ClubsClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.MusicType", null)
+                        .WithMany()
+                        .HasForeignKey("MusicTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubAddress", b =>
                 {
                     b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", "Club")
@@ -241,44 +274,6 @@ namespace FindYourPartyBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Club");
-                });
-
-            modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubClubType", b =>
-                {
-                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", "Club")
-                        .WithMany("ClubClubTypes")
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.ClubType", "ClubType")
-                        .WithMany("ClubClubTypes")
-                        .HasForeignKey("ClubTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("ClubType");
-                });
-
-            modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubMusicType", b =>
-                {
-                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.Club", "Club")
-                        .WithMany("ClubMusicTypes")
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FindYourPartyBackend.Data.Models.DbModels.MusicType", "MusicType")
-                        .WithMany("ClubMusicTypes")
-                        .HasForeignKey("MusicTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("MusicType");
                 });
 
             modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubOpeningHours", b =>
@@ -308,24 +303,10 @@ namespace FindYourPartyBackend.Migrations
                     b.Navigation("Address")
                         .IsRequired();
 
-                    b.Navigation("ClubClubTypes");
-
-                    b.Navigation("ClubMusicTypes");
-
                     b.Navigation("Events");
 
                     b.Navigation("OpeningHours")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.ClubType", b =>
-                {
-                    b.Navigation("ClubClubTypes");
-                });
-
-            modelBuilder.Entity("FindYourPartyBackend.Data.Models.DbModels.MusicType", b =>
-                {
-                    b.Navigation("ClubMusicTypes");
                 });
 #pragma warning restore 612, 618
         }
